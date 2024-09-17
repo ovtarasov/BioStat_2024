@@ -11,6 +11,9 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 library(readr)
 library(psych)
+library(tibble)
+library(dplyr)
+library(stringr)
 ```
 
 ```{r read table}
@@ -60,4 +63,25 @@ error(c(92.11, 56, 47.89, 62.96, 47.41, 37.05, 73.96, 53, 52.37, 85.23))
 # 5.2
 numeric_data <- readRDS("./data/raw/numeric_data.rds")
 describe(numeric_data, skew = F)
+```
+
+``` {r data sorting}
+# 6.4
+data_tsv %>% select(function(x) any(str_detect(x, "Жен")))
+data_tsv %>% select(`Группа крови`, `Возраст`, function(x) anyNA(x))
+data_tsv %>% select(`Группа`, function(x) !is.factor(x))
+data_tsv %>% select(where(is.numeric) & where(function(x) sd(x, na.rm = TRUE) > 1))
+data_tsv %>% select(`Пол`, `Группа`, `Базофилы_E1`)
+data_tsv %>% select(function(x) sd(x, na.rm = TRUE) > 1)
+data_tsv %>% select(`Группа`, (function(x) is.factor(x)) | where(function(x) is.numeric(x)))
+data_tsv %>% select(Группа крови, `Возраст`, function(x) anyNA(x))
+
+# 6.6
+data_tsv %>% mutate(across(function(x) any(near(x, 0.5, tol = 0.1)), function(x) x + 1000))
+
+data_tsv %>% mutate(across(!contains("E1") & !c(`Группа`, `Возраст`), function(x) x ^ 2))
+
+data_tsv %>% mutate(across(!contains("E1") & !c(`Группа`, `Возраст`) & !where(is.factor), function(x) x ^ 2), across(contains("E2"), function(x) x * 100))
+
+data_tsv %>% mutate(across(!contains("E1"), function(x) str_c(x, " + некая строка")))
 ```
