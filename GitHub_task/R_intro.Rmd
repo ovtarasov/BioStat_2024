@@ -2,9 +2,7 @@
 title: "R_intro"
 author: "Oleg V. Tarasov"
 date: "September 17, 2024"
-output:
-  word_document: default
-  html_document: default
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
