@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1726598137580.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B093F43C",
+    "lastKnownWriteTime" : 1726609231,
+    "last_content_update" : 1726609725365,
+    "path" : "~/Documents/Bioinf_SPb/Biostat_2024/Homeworks/R_intro/GitHub_task/R_intro.Rmd",
+    "project_path" : "R_intro.Rmd",
+    "properties" : {
+        "cursorPosition" : "23,0",
+        "last_setup_crc32" : "",
+        "scrollLine" : "15",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
