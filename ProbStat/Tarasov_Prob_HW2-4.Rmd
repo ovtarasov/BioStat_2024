@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.width=14, fig.height=10)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, error = FALSE)
 
 library(ggplot2)
 library(dplyr)
@@ -15,53 +15,24 @@ library(tibble)
 
 ```
 
-## Модель пациента: исследование прироста гемоглобина
+## Задаем истинную вероятность
+```{r population}
 
-```{r pressure, echo=FALSE}
+true_prob <- 0.5 # Истинная вероятность
 
-values <- 0:16 # Значения, которые может принимать прирост (случайная величина)
-max_val <- max(values) # Максимальное значение случайной величины
-Pr <- 1/length(values)  # Распределение в генеральной совокупности
-
-df <- data.frame(values, Pr)
-
-ggplot(df, aes(x=values, y=Pr)) +
-  geom_point() + 
-  geom_segment( aes(x=values, xend=values, y=0, yend=Pr)) +
-  scale_x_continuous(breaks = values) +
-  theme_bw()
-
-```
-## Характеристики прироста
-
-```{r characteristics}
-
-true_mean <- sum(values*Pr) # Истинное среднее (математическое ожидание)
-
-print(true_mean)
-
-variance <- sum((values-true_mean)^2*Pr) # Дисперсия
-
-print(variance)
-
-standard_deviation <- sqrt(variance)
-
-print(standard_deviation)
-
+print(true_prob)
 ```
 ## Однократная оценка по выборке
 
 ```{r sample_1}
 
-n_patients <- 5 # Количество добровольцев 
+n_patients_1 <- 5 # Количество добровольцев 
 
-my_group_Hg_upd <- round(runif(n_patients, 0, max_val), 0) # Результаты добровольцев
+my_group <- rbinom(n_patients_1, 1, true_prob) # Результаты добровольцев
+print(my_group)
 
-print(my_group_Hg_upd)
-
-sample_mean <- mean(my_group_Hg_upd)
-
-print(sample_mean)
+sample_prob_1 <- sum(my_group)/length(my_group)
+print(sample_prob_1)
 
 ```
 
@@ -75,32 +46,70 @@ n_repeats <- 1000 # Количество повторений экспериме
 
 df_all_repeats <- data.frame(
   n_exp = rep(1:n_repeats, each = n_patients),
-  ID =  rep(1:n_patients, n_repeats),
-  Hg_upd = round(runif(n_repeats*n_patients, 0, max_val), 0)
+  ID = rep(1:n_patients, n_repeats),
+  success = rbinom(n_repeats*n_patients, 1, true_prob)
 )
 
 ```
 
-## Оценка среднего в каждом эксперименте
+## Оценка вероятности в каждом эксперименте
 
-```{r estimations}
+```{r estimations, fig.width=8, fig.height=4}
 
-df_sample_mean <- df_all_repeats %>% 
+df_sample_prob <- df_all_repeats %>% 
   group_by(n_exp) %>% 
-  dplyr::summarise(mean_Hg_upd = mean(Hg_upd)) %>% 
+  dplyr::summarise(sample_prob = sum(success)/length(success)) %>% 
   ungroup()
 
-ggplot(df_sample_mean, aes(x = mean_Hg_upd)) +
-  geom_histogram(color = 'black', fill = 'white', binwidth = 0.2) +
-  theme_bw()
+# Назовем "ошибкой оценки вероятности" дисперсию выборочных вероятностей
+prob_error <- sqrt(mean((df_sample_prob$sample_prob - true_prob)^2) )
 
+# Посмотрим, как это выглядит на графике
+
+ggplot(df_sample_prob, aes(x = sample_prob)) +
+  geom_histogram(color = 'black', fill = 'white', binwidth = 0.01) +
+  geom_vline(xintercept = true_prob, linetype = "dashed", colour = "red") +
+  xlab(paste("Error =",round(prob_error,3))) + xlim(0,1) +
+  theme_bw()
 ```
 
-## Количественные и качественные итоги
+## Генерируем сразу много экспериментов
 
-```{r conclusions}
+```{r multiple, echo=T, warning=T, error=T}
 
-error <- sqrt( mean((df_sample_mean$mean_Hg_upd-true_mean)^2) )
-print(error)
+# Соберем все из двух предыдущих чанков в одну функцию
 
+generate_prob_error <- function(n_patients, true_prob) {
+  n_repeats = 1000
+  
+  df_all_repeats <- data.frame(
+    n_exp = rep(1:n_repeats, each = n_patients),
+    ID = rep(1:n_patients, n_repeats),
+    success = rbinom(n_repeats*n_patients, 1, true_prob))
+
+  df_sample_prob <- df_all_repeats %>% 
+  group_by(n_exp) %>% 
+  dplyr::summarise(sample_prob = sum(success)/length(success)) %>% 
+  ungroup()
+
+  prob_error <- sqrt(mean((df_sample_prob$sample_prob - true_prob)^2) )
+
+  return(prob_error)
+}
+
+
+patients <- c(3,5,10,15,20,30,50,75,100,200,500,1000) # Объемы выборок
+probs <- seq(0.1,0.9,0.1) # набор истинных вероятностей
+
+# Сгенерируем одну большую табличку
+
+prob_errors <- crossing(patients, probs) %>% 
+  rowwise() %>%
+  mutate(errors = generate_prob_error(patients, probs)) %>%
+  ungroup
+
+prob_errors_wide <- prob_errors %>% pivot_wider(names_from = probs, values_from = errors)
+
+# Вообще, хорошо было бы еще нарисовать графичков, но уже нет сил, извините. 
+# Словесное описание найденных закономерностей см. в общем файле с решением ДЗ.
 ```
