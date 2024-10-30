@@ -1,0 +1,213 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage{amssymb,amsmath}
+\usepackage{blindtext}
+\usepackage{cmap}
+%\usepackage[utf8x,utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+% \usepackage{fixltx2e} % provides \textsubscript
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,
+            urlcolor=blue,
+            unicode=true,
+            pdftitle={Домашнее задание по теории вероятностей №2},
+            pdfauthor={Олег Тарасов},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Домашнее задание по теории вероятностей №2}
+    \pretitle{\vspace{\droptitle}\centering\large\textbf}
+  \posttitle{\par}
+    \author{Олег Тарасов}
+    \preauthor{\centering\textit}
+  \postauthor{\par}
+      \predate{\centering\textit}
+  \postdate{\par}
+    \date{2024-10-13}
+
+\parskip=4pt               % интервал между абзацами
+\textheight=25cm           % высота текста
+\textwidth=17cm            % ширина текста
+\oddsidemargin=0pt         % отступ от левого края
+%\topmargin=-1.5cm          % отступ от верхнего края
+
+\begin{document}
+\maketitle
+
+\paragraph{Задание 1.}\label{-1.}
+
+\textit{\textbf{Доказать, что из \(Pr\{A\}=Pr\{A | B\}\) автоматически
+следует, что \(Pr\{A\} = Pr\{A | \overline{B}\}\).}}
+
+Преобразуем условную вероятность \[
+Pr\{A | \overline{B} \} = \frac{Pr\{A\overline{B}\} }{Pr\{\overline{B}\} } = \frac{Pr\{A\} - Pr\{AB\} }{Pr\{\overline{B}\} } = ...
+\]
+
+По условию \(Pr\{A\} = Pr\{A | B\}\), поэтому выражение можно
+преобразовать далее как \[
+...= \frac{Pr\{A | B\} - Pr\{AB\} }{Pr\{\overline{B}\} } = \frac{ Pr\{AB\}/Pr\{B \} - Pr\{AB\} }{Pr\{\overline{B}\} }
+\]
+
+Вынеся \(Pr\{ B\}\) в общий знаменатель, получаем \[
+\frac{ Pr\{AB\} - Pr\{AB\}Pr\{B \} }{Pr\{B \}Pr\{\overline{B}\} } = \frac{ Pr\{AB\}\big(1-Pr\{B \}\big) }{Pr\{B \}Pr\{\overline{B}\} } = \frac{ Pr\{AB\}Pr\{\overline{B} \} }{Pr\{B \}Pr\{\overline{B}\} } = \frac{ Pr\{AB\} }{Pr\{B \} } = \] 
+\(= Pr\{A | B\}\), что по условию равняется \(Pr\{A\}\).
+
+\begin{center}
+    \textit{\textbf{QED}}    
+\end{center}
+
+\paragraph{Задание 2.}\label{-2.}
+
+\textit{\textbf{Доказать, что из \(RR = 1\) следует, что случайные события
+-- независимы.}}
+
+Отношение рисков наблюдать событие \(A\) при условии наступления
+либо не наступления события \(B\) равняется \(RR = \frac{Pr\{A | B\} }{Pr\{A | \overline{B} \} }=1\), следовательно, 
+\(Pr\{A | B\} = Pr\{A | \overline{B} \}\).
+
+Представим условные вероятности в виде \[
+Pr\{A | B\} = \frac{Pr\{AB\} }{Pr\{B\} }
+\]
+
+\[
+Pr\{A | \overline{B} \} = \frac{Pr\{A\overline{B}\} }{Pr\{\overline{B}\} } = \frac{Pr\{A\} - Pr\{AB\} }{Pr\{\overline{B}\} } = 
+\frac{Pr\{A\} }{Pr\{\overline{B}\} } - \frac{Pr\{AB\}}{Pr\{\overline{B}\} }
+\]
+
+Приравняв эти два выражения и перенеся вычитаемое через знак равенства, получаем \[
+\frac{Pr\{A\} }{Pr\{\overline{B}\} } = \frac{Pr\{AB\} }{Pr\{B\} } + \frac{Pr\{AB\}}{Pr\{\overline{B}\} } 
+\]
+
+Преобразуя правую часть уравнения, получаем \[
+Pr\{AB\} \left( \frac{1}{Pr\{B\} } + \frac{1}{Pr\{\overline{B}\} } \right) = Pr\{AB\} \frac{Pr\{B\} + Pr\{\overline{B}\} } {Pr\{B\} Pr\{\overline{B}\} } 
+= \frac{Pr\{AB\} } {Pr\{B\} Pr\{\overline{B}\} }
+\]
+
+Поскольку \(Pr\{B\} \neq 0\) и \(Pr\{\overline{B}\} \neq 0\), то, приравняв
+два предыдущих выражения и домножив на \(Pr\{B\}Pr\{\overline{B}\}\),
+получаем \[
+Pr\{A\}Pr\{B\} = Pr\{AB\},
+\] что соответствует определению независимых событий.
+
+\begin{center}
+    \textit{\textbf{QED}}    
+\end{center}
+
+\paragraph{Задание 3.}\label{-3.}
+
+\textit{\textbf{A. Найдите математическое ожидание и дисперсию числа
+циклов терапии при первичном выявлении и при рецидиве (отдельно).}}
+
+При первичном выявлении заболевания математическое ожидание количества
+циклов химиотерапии \(\mu_1 = 1*0,5 + 2*0,5 = 1,5\), а дисперсия
+\(\sigma^2_1 = \big( (1-1,5)^2*0,5 + (2-1,5)^2*0,5\big) = 0,25\).
+
+При рецидиве математическое ожидание количества циклов терапии 
+\(\mu_2 = 2*0,25 + 3*0,75 = 2,75\), а дисперсия
+\(\sigma^2_2 = \big( (2-2,75)^2*0,25 + (3-2,75)^2*0,75\big) = 0,1875\).
+
+\textit{\textbf{B. Предположим, что мы изучаем только рецидивировавших
+пациентов.}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textit{\textbf{Постройте таблицу распределения общего числа циклов
+  терапии у рецидивировавших пациентов («дебютных» + «рецидивных»).}}
+\end{itemize}
+
+Если допустить, что выбор числа циклов при рецидиве не зависит от того,
+сколько циклов было в дебюте, то таблица имеет следующий вид:
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{l|ccc}
+        \hline
+        Количество циклов & 3 & 4 & 5\\
+        \hline
+        Вероятность & 0,125 & 0,5 & 0,375\\
+        \hline
+    \end{tabular}
+    % \caption{Caption}
+    \label{tab:my_label}
+\end{table}
+
+\begin{itemize}
+\tightlist
+\item
+  \textit{\textbf{Найдите математическое ожидание и дисперсию этой
+  величины.}}
+\end{itemize}
+
+Поскольку новая случайная величина является суммой двух исходных, и мы принимаем допущение об их независимости, то математическое ожидание и дисперсия этой величины равны соответственно сумме математических ожиданий и сумме дисперсий двух исходных величин: \(\mu_3 = \mu_1+\mu_2 = 4,25\), 
+\(\sigma^2_3 = \sigma^2_1 + \sigma^2_2 = 0,4375.\)
+
+% \(\mu_3 = 3*0,125 + 4*0,5 + 5*0,375 = 4,25\), а дисперсия
+% \(\sigma^2_3 = \big( (3-4,25)^2*0,125 + (4-4,25)^2*0,5 + (5-4,25)^2*0,375\big) = 0,4375\).
+
+\paragraph{Задание 4 \textit{(добавлено 2024-10-20)}.}\label{-4.} 
+
+\textit{\textbf{Переделайте скрипт так, чтобы в нем можно было бы анализировать ошибку в оценке вероятности события в зависимости от истинной вероятности и объема выборки.}}
+
+В скрипте истинная вероятность события \verb|true_prob| задается явно в виде одного числа. Далее создаются выборки из n независимых пациентов, каждый из которых излечивается с вероятностью \verb|true_prob|. В качестве выборочной оценки вероятности используется доля излечившихся пациентов. В качестве меры ошибки оценки вероятности я использовал дисперсию выборочных оценок по 1000 выборок. Скрипт позволяет визуализировать распределение выброчных оценок вероятности по отдельности в каждой серии экспериментов (с заданными числом пациентов и истинной вероятностью). Другие визуализации я не делал.
+
+Полный скрипт выложен на \href{https://github.com/ovtarasov/BioStat_2024/blob/main/ProbStat/Tarasov_Prob_HW2-4.Rmd}{github}, ссылка добавлена в гугл-класс.
+
+\textit{\textbf{Какие закономерности вы можете вычислить, экспериментируя со скриптом?}}
+
+Я проанализировал выборки размером от 3 до 1000 пациентов с увеличением приблизительно в 1,5 раза на каждом шаге и значения истинных вероятностей от 0,1 до 0,9 с шагом 0,1. С увеличением объема выборки ошибка монотонно уменьшается, чем дальше --- тем медленнее, зависимость на вид похожа на $1/\sqrt{x}$. Зависимость ошибки от истинной вероятности выпуклая немонотонная и напоминает многочлен второй степени с отрицательным коэффициентом при старшей степени: при истинных вероятностях 0 и 1 ошибка при выбранном методе оценики, очевидно, будет нулевой (в скрипте я это не демонстрирую), а максимум достигается при истинной вероятности 0,5.
+
+\end{document}
