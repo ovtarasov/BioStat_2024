@@ -1,5 +1,7 @@
 # BioStat_2024
-My files for Bioinformatics Institute Biostatistics course 2024  
+My files for [Bioinformatics Institute Biostatistics course](https://bioinf.me/education/stat) 2024  
+
+[List of students](https://bioinf.me/community/students#!/tab/796379998-2) *\(in Russian\)*
 
 ## Homeworks  
 
